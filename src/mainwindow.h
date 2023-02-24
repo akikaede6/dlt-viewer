@@ -587,6 +587,8 @@ private slots:
 
     void on_lineEditFilterEnd_textChanged(const QString &arg1);
 
+    void onScrollBarToMaximum(int action);
+
 public slots:
 
     void sendInjection(int index,QString applicationId,QString contextId,int serviceId,QByteArray data);

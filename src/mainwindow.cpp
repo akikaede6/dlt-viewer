@@ -47,7 +47,7 @@
 #include <QProcess>
 #include <QStyleFactory>
 #include <QTextStream>
-
+#include <QScrollBar>
 
 /**
  * From QDlt.
@@ -529,6 +529,7 @@ void MainWindow::initSignalConnections()
 
     // connect tableView selection model change to handler in mainwindow
     connect(ui->tableView->selectionModel(),  &QItemSelectionModel::selectionChanged, this, &MainWindow::onTableViewSelectionChanged);
+    connect(ui->tableView->verticalScrollBar(), &QScrollBar::valueChanged, this, &MainWindow::onScrollBarToMaximum);
 
     // connect file loaded signal with  explorerView
     connect(this, &MainWindow::dltFileLoaded, this, [this](const QStringList& paths){
@@ -537,6 +538,17 @@ void MainWindow::initSignalConnections()
         ui->exploreView->scrollTo(
                     proxyModel->mapFromSource(fsModel->index(recentFiles[0])));
     });
+}
+
+void MainWindow::onScrollBarToMaximum(int action)
+{
+    std::cout << __func__ << action << std::endl;
+    if (action >= ui->tableView->verticalScrollBar()->maximum() - 1) {
+        on_actionAutoScroll_triggered(true);
+        scrollButton->setChecked(true);
+        ui->tableView->verticalScrollBar()->triggerAction(QAbstractSlider::SliderToMaximum);
+        ui->tableView->setAutoScroll(true);
+    }
 }
 
 void MainWindow::initSearchTable()
