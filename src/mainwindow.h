@@ -499,7 +499,7 @@ private slots:
     void on_actionToggle_PluginsEnabled_triggered(bool checked);
     void on_actionToggle_FiltersEnabled_triggered(bool checked);
     void on_actionToggle_SortByTimeEnabled_triggered(bool checked);
-
+    void onScrollBarToMaximum(int action);
 
 public slots:
 

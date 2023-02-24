@@ -36,6 +36,7 @@
 #include <QInputDialog>
 #include <QByteArray>
 #include <QSysInfo>
+#include <QScrollBar>
 
 /**
  * From QDlt.
@@ -376,7 +377,19 @@ void MainWindow::initSignalConnections()
     connect(ui->tableView->selectionModel(),
             SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
             SLOT(on_tableView_selectionChanged(const QItemSelection &, const QItemSelection &)));
+    connect(ui->tableView->verticalScrollBar(), &QScrollBar::valueChanged, this, &MainWindow::onScrollBarToMaximum);
 
+}
+
+void MainWindow::onScrollBarToMaximum(int action)
+{
+    std::cout << __func__ << action << std::endl;
+    if (action >= ui->tableView->verticalScrollBar()->maximum() - 1) {
+        on_actionAutoScroll_triggered(true);
+        scrollButton->setChecked(true);
+        ui->tableView->verticalScrollBar()->triggerAction(QAbstractSlider::SliderToMaximum);
+        ui->tableView->setAutoScroll(true);
+    }
 }
 
 void MainWindow::initSearchTable()
